@@ -4,32 +4,67 @@ import re
 
 
 class SampleExercises:
-    # Dept meeting Aug 22, 2019
-    @staticmethod
-    def get_roman_numeral(int_number):
-        rnc = RomanNumeralConverter()
-        return rnc.convertIntegerToRomanNumeral(int_number)
 
+    # Dept meeting Aug 22, 2019
     @staticmethod
     def convert_roman_numeral(roman_numeral):
         rnc = RomanNumeralConverter()
         return rnc.convertRomanNumeralToInteger(roman_numeral)
 
+    @staticmethod
+    def get_roman_numeral(int_number):
+        forward_digits = ['1', '2', '3', '6', '7', '8']
+        behind_digits = ['4', '9']
+        five_digit = ['5']
+        zero_digit = ['0']
+        roman_num_dic = {0: '', 1: 'I', 5: 'V', 10: 'X', 50: 'L', 100: 'C'}
+        digits = SampleExercises.reverseNumber(int_number)
+
+        for digit in digits:
+            if digit in forward_digits:
+                format = 'yxxx'
+
+            elif digit in behind_digits:
+                format = 'xy'
+
+            elif digit in five_digit:
+                format = 'x'
+
+            elif digit in zero_digit:
+                format = ''
+
+        return ''
+
+    def reverseNumber(number):
+        reverse = 0
+
+        while (number > 0):
+            lastDigit = number % 10
+            reverse = (reverse * 10) + lastDigit
+            number = number / 10
+        return reverse
+
     # Dept meeting Aug 22, 2019
     @staticmethod
     def remove_duplicate_words(phrase):
-        return str(OrderedSet(phrase.split())) # a standard set does not maintain order
+        list_of_words = []
+        for word in phrase.split(' '):
+            if word not in list_of_words:
+                list_of_words.append(word)
+        return ' '.join(list_of_words)
 
     # Dept meeting Aug 22, 2019
     @staticmethod
     def dict_replacer(phrase, dictionary):
-        replace_me = re.compile('(<([^>]*)>)')
+        iter = 0
+        list_phrase = phrase.split(' ')
+        for word in list_phrase:
 
-        for match in replace_me.findall(phrase):
-            phrase = re.compile(match[0]).sub(dictionary[match[1]], phrase)
+            if '<' in word and '>' in word:
+                list_phrase[iter] = dictionary[word.translate({ord(i): None for i in '<>.'})]
 
-        return phrase
-
+            iter += 1
+        return ' '.join(list_phrase)
 
     @staticmethod
     def dynamic_classes(names):
